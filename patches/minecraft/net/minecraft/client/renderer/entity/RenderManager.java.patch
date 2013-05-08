@@ -1,6 +1,15 @@
 --- ../src_base/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
 +++ ../src_work/minecraft/net/minecraft/client/renderer/entity/RenderManager.java
-@@ -221,12 +221,14 @@
+@@ -88,6 +88,8 @@
+ import net.minecraft.util.MathHelper;
+ import net.minecraft.util.ReportedException;
+ import net.minecraft.world.World;
++import net.minecraftforge.client.event.EntityRenderEvent;
++import net.minecraftforge.common.MinecraftForge;
+ import org.lwjgl.opengl.GL11;
+ 
+ @SideOnly(Side.CLIENT)
+@@ -221,12 +223,14 @@
  
          if (par4EntityLiving.isPlayerSleeping())
          {
@@ -20,3 +29,15 @@
                  this.playerViewY = (float)(k * 90 + 180);
                  this.playerViewX = 0.0F;
              }
+@@ -288,6 +292,11 @@
+         try
+         {
+             render = this.getEntityRenderObject(par1Entity);
++
++            if (!MinecraftForge.EVENT_BUS.post(new EntityRenderEvent(render, par1Entity, par2, par4, par6, par8, par9)))
++            {
++                return;
++            }
+ 
+             if (render != null && this.renderEngine != null)
+             {
